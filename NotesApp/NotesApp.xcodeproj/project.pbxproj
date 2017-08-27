@@ -13,6 +13,7 @@
 		23086F4D1F524C8900DD1AA4 /* NotesApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23086F4B1F524C8900DD1AA4 /* NotesApp.xcdatamodeld */; };
 		23086F4F1F524C8900DD1AA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23086F4E1F524C8900DD1AA4 /* Assets.xcassets */; };
 		23086F521F524C8900DD1AA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23086F501F524C8900DD1AA4 /* LaunchScreen.storyboard */; };
+		2309F0B11F5256EB00C90B63 /* NotesShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 232B46611F5250A700838947 /* NotesShared.framework */; };
 		FE3403274F1DF2FA44249D2D /* libPods-NotesApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F9A7338FAC3E0B00D17792B /* libPods-NotesApp.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2309F0B11F5256EB00C90B63 /* NotesShared.framework in Frameworks */,
 				FE3403274F1DF2FA44249D2D /* libPods-NotesApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
