@@ -6,6 +6,7 @@
 //  Copyright © 2017 Dimitry Zolotaryov. All rights reserved.
 //
 
+import NotesShared
 import UIKit
 
 class ViewController: UIViewController {

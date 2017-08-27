@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 public struct Note {
     
@@ -14,16 +15,17 @@ public struct Note {
     static let dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZ"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         return dateFormatter
     }()
     
-    let key: Int?
-    let note: String
-    let date: Date
+    public var key: Int?
+    public let note: String
+    public let date: Date
     
     // Initializer
 
-    init(key: Int?, note: String, date: Date) {
+    public init(key: Int?, note: String, date: Date) {
         self.key = key
         self.note = note
         self.date = date
@@ -31,23 +33,28 @@ public struct Note {
     
     // Serialization / deserialization
     
-    init?(dict: [String: Any?]) {
+    public init?(json: JSON) {
         guard
-            let note = dict["note"] as? String,
-            let dateString = dict["date"] as? String,
+            let note = json["note"].string,
+            let dateString = json["date"].string,
             let date = Note.dateFormatter.date(from: dateString)
             else { return nil }
         
-        self.key = dict["key"] as? Int
+        self.key = json["key"].int
         self.note = note
         self.date = date
     }
     
-    var dict: [String: Any?] {
-        return [
-            "key": key,
+    public var json: JSON {
+        var dict: [String: Any] = [
             "note": note,
             "date": Note.dateFormatter.string(from: date)
         ]
+        
+        if let key = key {
+            dict["key"] = key
+        }
+        
+        return JSON(dict)
     }
 }
