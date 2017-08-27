@@ -12,14 +12,14 @@ var notes: [Note] = [
 // The router
 let router = Router()
 
-// Adds the body parser
-router.all("/notes", middleware: BodyParser())
-
 // Retrieves all notes
 router.get("/notes") { request, response, next in
     response.send(json: notes.json)
     next()
 }
+
+// Adds the body parser
+router.post("/notes", middleware: BodyParser())
 
 // Creates a new note and returns it
 router.post("/notes") { request, response, next in
@@ -35,6 +35,8 @@ router.post("/notes") { request, response, next in
     }
     next()
 }
+
+// Delete a post
 
 // Starts the Kitura server
 Kitura.addHTTPServer(onPort: 8080, with: router)
