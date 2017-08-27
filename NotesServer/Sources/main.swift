@@ -30,13 +30,31 @@ router.post("/notes") { request, response, next in
     
     lock() {
         note.key = notes.nextKey()
-        notes.append(note) 
-        response.send(json: note.json)
+        notes.append(note)
     }
+    
+    response.send(json: note.json)
     next()
 }
 
 // Delete a post
+router.delete("/notes/:key") { request, response, next in
+    guard
+        let keyString = request.parameters["key"],
+        let key = Int(keyString)
+        else { next(); return }
+    
+    var note: Note? = nil
+    
+    lock() {
+        note = notes.removeForKey(key)
+    }
+    
+    if note != nil {
+        response.send(json: note!.json)
+    }
+    next()
+}
 
 // Starts the Kitura server
 Kitura.addHTTPServer(onPort: 8080, with: router)

@@ -22,4 +22,12 @@ public extension Array where Element == Note {
         }
         return maxKey + 1
     }
+    
+    public mutating func removeForKey(_ key: Int) -> Note? {
+        if let index = index(where: { $0.key == key }) {
+            return remove(at: index)
+        } else {
+            return nil
+        }
+    }
 }
