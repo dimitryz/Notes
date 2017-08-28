@@ -8,9 +8,6 @@
       location = "group:NotesServer/NotesServer.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:NotesShared/NotesShared.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>

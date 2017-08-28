@@ -14,6 +14,17 @@ public extension Array where Element == Note {
         return JSON(map { $0.json })
     }
     
+    public init?(json: JSON) {
+        guard let array = json.array else { return nil }
+        
+        self.init()
+        
+        for json in array {
+            guard let note = Note(json: json) else { continue }
+            append(note)
+        }
+    }
+    
     public func nextKey() -> Int {
         var maxKey: Int = 0
         for note in self {

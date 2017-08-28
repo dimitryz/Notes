@@ -1,5 +1,9 @@
 workspace "Notes.xcworkspace"
 
 target "NotesApp" do
-  project "NotesApp/NotesApp.xcproj"
+  use_frameworks!
+    
+  project "NotesApp/NotesApp.xcodeproj"
+  
+  pod "SwiftyJSON"
 end
