@@ -37,6 +37,31 @@ router.post("/notes") { request, response, next in
     next()
 }
 
+// Updates an existing note
+router.post("/notes/:key") { request, response, next in
+    guard
+        let keyString = request.parameters["key"],
+        let key = Int(keyString),
+        let noteText = request.body?.asJSON?["note"].string
+        else { next(); return }
+    
+    var note: Note?
+    
+    lock() {
+        if let index = notes.indexForKey(key) {
+            note = notes[index]
+            note!.note = noteText
+            notes[index] = note!
+        }
+    }
+    
+    if note != nil {
+        response.send(json: note!.json)
+    }
+    
+    next()
+}
+
 // Delete a post
 router.delete("/notes/:key") { request, response, next in
     guard

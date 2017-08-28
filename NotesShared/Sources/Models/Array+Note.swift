@@ -34,8 +34,12 @@ public extension Array where Element == Note {
         return maxKey + 1
     }
     
+    public func indexForKey(_ key: Int) -> Int? {
+        return index(where: { $0.key == key })
+    }
+    
     public mutating func removeForKey(_ key: Int) -> Note? {
-        if let index = index(where: { $0.key == key }) {
+        if let index = indexForKey(key) {
             return remove(at: index)
         } else {
             return nil

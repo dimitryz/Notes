@@ -20,7 +20,7 @@ public struct Note {
     }()
     
     public var key: Int?
-    public let note: String
+    public var note: String
     public let date: Date
     
     // Initializer
