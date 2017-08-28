@@ -11,7 +11,9 @@ import UIKit
 class RootViewController: UINavigationController {
     
     init() {
-        super.init(rootViewController: NotesViewController())
+        super.init(nibName: nil, bundle: nil)
+        
+        pushViewController(NotesViewController(), animated: false)
     }
     
     required init?(coder aDecoder: NSCoder) {

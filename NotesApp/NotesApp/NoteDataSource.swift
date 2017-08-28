@@ -8,6 +8,7 @@
 
 import Foundation
 import NotesShared
+import SwiftyJSON
 
 enum NoteDataSourceError: Error {
     case missingKey
@@ -24,7 +25,7 @@ class NoteDataSource {
     }
     
     func fetchAll(callback: @escaping ([Note]?, NoteDataSourceError?) -> Void) -> URLSessionDataTask {
-        return dataTask("/posts", method: .get) { data, error in
+        return dataTask("/notes", method: .get) { data, error in
             guard error == nil else {
                 callback(nil, error)
                 return
@@ -69,7 +70,7 @@ class NoteDataSource {
             return nil
         }
         
-        return dataTask("/\(noteKey)", method: .delete) { data, error in
+        return dataTask("/notes/\(noteKey)", method: .delete) { data, error in
             guard error == nil else {
                 callback(note, error)
                 return

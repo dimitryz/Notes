@@ -11,12 +11,49 @@ import UIKit
 
 class NotesViewController: UITableViewController {
     
+    static let cellIdentifier = "Cell"
+    
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .medium
+        formatter.timeZone = .current
+        return formatter
+    }()
+    
+    // MARK: - Lifecycle
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if notes == nil {
             self.fetchNotes()
         }
+    }
+    
+    // MARK: - TableView
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return notes?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell: UITableViewCell
+        
+        if let dequeued = tableView.dequeueReusableCell(withIdentifier: NotesViewController.cellIdentifier) {
+            cell = dequeued
+        } else {
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: NotesViewController.cellIdentifier)
+            cell.selectionStyle = .none
+        }
+        
+        if let note = notes?[indexPath.row] {
+            cell.textLabel?.text = note.note
+            cell.detailTextLabel?.text = NotesViewController.dateFormatter.string(from: note.date)
+        }
+        
+        return cell
     }
     
     // MARK: - Private
@@ -34,8 +71,10 @@ class NotesViewController: UITableViewController {
             guard let strongSelf = self else { return }
             guard error == nil else { strongSelf.handleDataSourceError(error!); return }
             
-            strongSelf.notes = notes
-            strongSelf.tableView.reloadData()
+            DispatchQueue.main.async {
+                strongSelf.notes = notes
+                strongSelf.tableView.reloadData()
+            }
         }
     }
     
