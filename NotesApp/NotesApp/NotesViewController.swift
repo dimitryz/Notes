@@ -45,7 +45,6 @@ class NotesViewController: UITableViewController {
             cell = dequeued
         } else {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: NotesViewController.cellIdentifier)
-            cell.selectionStyle = .none
         }
         
         if let note = notes?[indexPath.row] {
@@ -54,6 +53,14 @@ class NotesViewController: UITableViewController {
         }
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if let notes = notes {
+            showNote(notes[indexPath.row])
+        }
     }
     
     // MARK: - Private
@@ -102,5 +109,11 @@ class NotesViewController: UITableViewController {
         alertView.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
         
         present(alertView, animated: true)
+    }
+    
+    private func showNote(_ note: Note) {
+        let ctrl = NoteViewController()
+        ctrl.note = note
+        navigationController?.pushViewController(ctrl, animated: true)
     }
 }
