@@ -48,7 +48,7 @@ class NoteDataSource {
         
         let newNote = Note(key: nil, note: text, date: Date())
         
-        return dataTask("/", method: .post, payload: newNote.json) { data, error in
+        return dataTask("/notes", method: .post, payload: newNote.json) { data, error in
             guard error == nil else {
                 callback(nil, error)
                 return

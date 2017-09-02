@@ -23,6 +23,12 @@ class NotesViewController: UITableViewController {
     
     // MARK: - Lifecycle
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -51,7 +57,7 @@ class NotesViewController: UITableViewController {
         }
         
         if let note = notes?[indexPath.row] {
-            cell.textLabel?.text = note.note
+            cell.textLabel?.text = note.note.isEmpty ? " " : note.note
             cell.detailTextLabel?.text = NotesViewController.dateFormatter.string(from: note.date)
         }
         
@@ -75,6 +81,23 @@ class NotesViewController: UITableViewController {
     private let noteDataSource = NoteDataSource()
     
     private var noteFetchAllDataTask: URLSessionDataTask?
+    
+    fileprivate func addNote() {
+        _ = noteDataSource.save(text: "") { [weak self] (note, error) in
+            
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                
+                if let error = error {
+                    sSelf.showError(error: error)
+                } else if let note = note {
+                    sSelf.notes?.insert(note, at: 0)
+                    sSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .bottom)
+                    sSelf.showNote(note)
+                }
+            }
+        }
+    }
     
     fileprivate func deleteNote(index: Int) {
         guard let notes = notes else { return }
@@ -136,6 +159,8 @@ class NotesViewController: UITableViewController {
         ctrl.note = note
         ctrl.delegate = self
         navigationController?.pushViewController(ctrl, animated: true)
+        
+        noteToUpdate = note
     }
     
     private func updateUIForNote(note: Note) {
@@ -153,11 +178,20 @@ class NotesViewController: UITableViewController {
     }
 }
 
+// MARK: - Actions
+
+extension NotesViewController {
+    
+    func addButtonTapped() {
+        addNote()
+    }
+}
+
 // MARK: - NoteViewControllerDelegate
 
 extension NotesViewController: NoteViewControllerDelegate {
     
     func noteViewController(noteViewController: NoteViewController, didSaveNote note: Note) {
-        noteToUpdate = note
+        
     }
 }
