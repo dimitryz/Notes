@@ -85,10 +85,6 @@ class NotesViewController: UITableViewController {
         }
     }
     
-    private func saveNote(text: String) {
-        
-    }
-    
     private func deleteNote(index: Int) {
         
     }
