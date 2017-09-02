@@ -9,13 +9,7 @@
 import NotesShared
 import UIKit
 
-protocol NoteViewControllerDelegate {
-    func noteViewController(noteViewController: NoteViewController, didSaveNote note: Note)
-}
-
 class NoteViewController: UIViewController {
-    
-    var delegate: NoteViewControllerDelegate? = nil
     
     var note: Note? {
         didSet {
@@ -124,19 +118,16 @@ extension NoteViewController {
             
             _ = sSelf.noteDataSource.update(note: newNote, callback: { [weak self] (_, error) in
                 
-                DispatchQueue.main.async { [weak self] in
-                    self?.hideLoadingIndicator { [weak self] in
-                        guard
-                            let sSelf = self,
-                            let note = sSelf.note
-                            else { return }
-                        
-                        if let error = error {
-                            sSelf.showError(error: error)
-                        } else {
-                            note.note = newNoteContent
-                            sSelf.delegate?.noteViewController(noteViewController: sSelf, didSaveNote: note)
-                        }
+                self?.hideLoadingIndicator { [weak self] in
+                    guard
+                        let sSelf = self,
+                        let note = sSelf.note
+                        else { return }
+                    
+                    if let error = error {
+                        sSelf.showError(error: error)
+                    } else {
+                        note.note = newNoteContent
                     }
                 }
             })

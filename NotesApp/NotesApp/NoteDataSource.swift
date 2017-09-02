@@ -116,10 +116,12 @@ class NoteDataSource {
         }
         
         let task = session().dataTask(with: urlRequest) { data, response, error in
-            if let error = error {
-                callback(nil, .networkError(error: error))
-            } else {
-                callback(data, nil)
+            DispatchQueue.main.async {
+                if let error = error {
+                    callback(nil, .networkError(error: error))
+                } else {
+                    callback(data, nil)
+                }
             }
         }
         task.resume()

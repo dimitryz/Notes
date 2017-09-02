@@ -85,16 +85,14 @@ class NotesViewController: UITableViewController {
     fileprivate func addNote() {
         _ = noteDataSource.save(text: "") { [weak self] (note, error) in
             
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self else { return }
-                
-                if let error = error {
-                    sSelf.showError(error: error)
-                } else if let note = note {
-                    sSelf.notes?.insert(note, at: 0)
-                    sSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .bottom)
-                    sSelf.showNote(note)
-                }
+            guard let sSelf = self else { return }
+            
+            if let error = error {
+                sSelf.showError(error: error)
+            } else if let note = note {
+                sSelf.notes?.insert(note, at: 0)
+                sSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .bottom)
+                sSelf.showNote(note)
             }
         }
     }
@@ -103,15 +101,11 @@ class NotesViewController: UITableViewController {
         guard let notes = notes else { return }
         
         _ = noteDataSource.delete(note: notes[index]) { [weak self] (note, error) in
-            
-            DispatchQueue.main.async { [weak self] in
-                
-                if let error = error {
-                    self?.showError(error: error)
-                } else {
-                    self?.notes?.remove(at: index)
-                    self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .top)
-                }
+            if let error = error {
+                self?.showError(error: error)
+            } else {
+                self?.notes?.remove(at: index)
+                self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .top)
             }
         }
     }
@@ -123,10 +117,8 @@ class NotesViewController: UITableViewController {
             guard let strongSelf = self else { return }
             guard error == nil else { strongSelf.handleDataSourceError(error!); return }
             
-            DispatchQueue.main.async {
-                strongSelf.notes = notes
-                strongSelf.tableView.reloadData()
-            }
+            strongSelf.notes = notes
+            strongSelf.tableView.reloadData()
         }
     }
     
@@ -157,7 +149,6 @@ class NotesViewController: UITableViewController {
     private func showNote(_ note: Note) {
         let ctrl = NoteViewController()
         ctrl.note = note
-        ctrl.delegate = self
         navigationController?.pushViewController(ctrl, animated: true)
         
         noteToUpdate = note
@@ -184,14 +175,5 @@ extension NotesViewController {
     
     func addButtonTapped() {
         addNote()
-    }
-}
-
-// MARK: - NoteViewControllerDelegate
-
-extension NotesViewController: NoteViewControllerDelegate {
-    
-    func noteViewController(noteViewController: NoteViewController, didSaveNote note: Note) {
-        
     }
 }

@@ -11,8 +11,12 @@ import Foundation
 // A thread with unique write access to the notes
 private let writeThread = DispatchQueue(label: "Write Queue")
 
+private let semaphore = DispatchSemaphore(value: 1)
+
 func lock(block: () -> Void) {
     _ = writeThread.sync {
+        semaphore.wait()
         block()
+        semaphore.signal()
     }
 }
