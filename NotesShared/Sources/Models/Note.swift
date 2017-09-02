@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct Note {
+public class Note {
     
     // MARK: - Public
     
@@ -56,5 +56,12 @@ public struct Note {
         }
         
         return JSON(dict)
+    }
+}
+
+extension Note: NSCopying {
+    
+    public func copy(with zone: NSZone? = nil) -> Any {
+        return Note(key: key, note: note, date: date)
     }
 }

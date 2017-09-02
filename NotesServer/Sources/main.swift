@@ -12,14 +12,14 @@ var notes: [Note] = [
 // The router
 let router = Router()
 
+// Adds the body parser
+router.all(middleware: BodyParser())
+
 // Retrieves all notes
 router.get("/notes") { request, response, next in
     response.send(json: notes.json)
     next()
 }
-
-// Adds the body parser
-router.post("/notes", middleware: BodyParser())
 
 // Creates a new note and returns it
 router.post("/notes") { request, response, next in

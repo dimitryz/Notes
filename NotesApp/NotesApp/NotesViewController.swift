@@ -65,7 +65,7 @@ class NotesViewController: UITableViewController {
     
     // MARK: - Private
     
-    private var notes: [Note]? = nil
+    fileprivate var notes: [Note]? = nil
     
     private let noteDataSource = NoteDataSource()
     
@@ -114,6 +114,21 @@ class NotesViewController: UITableViewController {
     private func showNote(_ note: Note) {
         let ctrl = NoteViewController()
         ctrl.note = note
+        ctrl.delegate = self
         navigationController?.pushViewController(ctrl, animated: true)
+    }
+}
+
+extension NotesViewController: NoteViewControllerDelegate {
+    
+    func noteViewController(noteViewController: NoteViewController, didSaveNote note: Note) {
+        guard
+            let notes = self.notes,
+            let key = note.key,
+            let index = notes.indexForKey(key)
+            else { return }
+        
+        let indexPath = IndexPath(row: index, section: 0)
+        tableView.reloadRows(at: [indexPath], with: .fade)
     }
 }

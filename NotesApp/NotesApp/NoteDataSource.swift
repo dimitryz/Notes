@@ -45,7 +45,10 @@ class NoteDataSource {
     }
     
     func save(text: String, callback: @escaping (Note?, NoteDataSourceError?) -> Void) -> URLSessionDataTask {
-        return dataTask("/", method: .post) { data, error in
+        
+        let newNote = Note(key: nil, note: text, date: Date())
+        
+        return dataTask("/", method: .post, payload: newNote.json) { data, error in
             guard error == nil else {
                 callback(nil, error)
                 return
@@ -57,6 +60,22 @@ class NoteDataSource {
                 else
             {
                 callback(nil, NoteDataSourceError.parsingError)
+                return
+            }
+            
+            callback(note, nil)
+        }
+    }
+    
+    func update(note: Note, callback: @escaping (Note, NoteDataSourceError?) -> Void) -> URLSessionDataTask? {
+        guard let noteKey = note.key else {
+            callback(note, .missingKey)
+            return nil
+        }
+        
+        return dataTask("/notes/\(noteKey)", method: .post, payload: note.json) { data, error in
+            guard error == nil else {
+                callback(note, error)
                 return
             }
             
@@ -85,10 +104,16 @@ class NoteDataSource {
     private func dataTask(
         _ path: String,
         method: Method = .get,
+        payload: JSON? = nil,
         callback: @escaping (Data?, NoteDataSourceError?) -> Void) -> URLSessionDataTask
     {
         var urlRequest = URLRequest(url: url(path))
         urlRequest.httpMethod = method.rawValue
+        
+        if let payload = payload {
+            urlRequest.httpBody = try? payload.rawData()
+            urlRequest.addValue("application/json", forHTTPHeaderField: "Content-type")
+        }
         
         let task = session().dataTask(with: urlRequest) { data, response, error in
             if let error = error {

@@ -9,7 +9,13 @@
 import NotesShared
 import UIKit
 
+protocol NoteViewControllerDelegate {
+    func noteViewController(noteViewController: NoteViewController, didSaveNote note: Note)
+}
+
 class NoteViewController: UIViewController {
+    
+    var delegate: NoteViewControllerDelegate? = nil
     
     var note: Note? {
         didSet {
@@ -54,6 +60,8 @@ class NoteViewController: UIViewController {
     
     // MARK: - Private
     
+    private var loadingViewController: LoadingViewController?
+    
     private var newNoteContent: String?
     
     private let noteDataSource = NoteDataSource()
@@ -77,7 +85,52 @@ class NoteViewController: UIViewController {
     }
     
     func saveTapped() {
+        guard
+            let note = self.note,
+            let newNoteContent = newNoteContent
+            else { return }
         
+        let newNote = note.copy() as! Note
+        newNote.note = newNoteContent
+        
+        showLoadingIndicator { [weak self] in
+            guard let sSelf = self else { return }
+            
+            _ = sSelf.noteDataSource.update(note: newNote, callback: { [weak self] (_, error) in
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.hideLoadingIndicator { [weak self] in
+                        guard
+                            let sSelf = self,
+                            let note = sSelf.note
+                            else { return }
+                        
+                        if let error = error {
+                            sSelf.showError(error: error)
+                        } else {
+                            note.note = newNoteContent
+                            sSelf.delegate?.noteViewController(noteViewController: sSelf, didSaveNote: note)
+                        }
+                    }
+                }
+            })
+        }
+    }
+    
+    private func showLoadingIndicator(callback: (() -> Void)?) {
+        let loadingViewController = LoadingViewController()
+        navigationController?.present(loadingViewController, animated: true, completion: callback)
+        self.loadingViewController = loadingViewController
+    }
+    
+    private func hideLoadingIndicator(callback: (() -> Void)?) {
+        loadingViewController?.dismiss(animated: true, completion: callback)
+    }
+    
+    private func showError(error: Error) {
+        let alert = UIAlertController(title: "Error", message: "\(error)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
+        navigationController?.present(alert, animated: true, completion: nil)
     }
 }
 
