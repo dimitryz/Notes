@@ -80,11 +80,15 @@ class NotesViewController: UITableViewController {
         guard let notes = notes else { return }
         
         _ = noteDataSource.delete(note: notes[index]) { [weak self] (note, error) in
-            if let error = error {
-                self?.showError(error: error)
-            } else {
-                self?.notes?.remove(at: index)
-                self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .top)
+            
+            DispatchQueue.main.async { [weak self] in
+                
+                if let error = error {
+                    self?.showError(error: error)
+                } else {
+                    self?.notes?.remove(at: index)
+                    self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .top)
+                }
             }
         }
     }
