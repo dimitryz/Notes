@@ -58,11 +58,11 @@ class NoteViewController: UIViewController {
     
     private var loadingViewController: LoadingViewController?
     
-    private let noteDataSource = NoteDataSource()
+    fileprivate let noteDataSource = NoteDataSource()
     
     private let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveTapped))
     
-    private var newNoteContent: String? {
+    fileprivate var newNoteContent: String? {
         didSet {
             updateSaveButtonState()
         }
@@ -84,17 +84,17 @@ class NoteViewController: UIViewController {
         title = text.substring(to: range?.lowerBound ?? text.endIndex)
     }
     
-    private func hideLoadingIndicator(callback: (() -> Void)?) {
+    fileprivate func hideLoadingIndicator(callback: (() -> Void)?) {
         loadingViewController?.dismiss(animated: true, completion: callback)
     }
     
-    private func showError(error: Error) {
+    fileprivate func showError(error: Error) {
         let alert = UIAlertController(title: "Error", message: "\(error)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
         navigationController?.present(alert, animated: true, completion: nil)
     }
     
-    private func showLoadingIndicator(callback: (() -> Void)?) {
+    fileprivate func showLoadingIndicator(callback: (() -> Void)?) {
         let loadingViewController = LoadingViewController()
         navigationController?.present(loadingViewController, animated: true, completion: callback)
         self.loadingViewController = loadingViewController

@@ -28,6 +28,9 @@ class NotesViewController: UITableViewController {
         
         if notes == nil {
             self.fetchNotes()
+        } else if let noteToUpdate = noteToUpdate {
+            updateUIForNote(note: noteToUpdate)
+            self.noteToUpdate = nil
         }
     }
     
@@ -67,9 +70,24 @@ class NotesViewController: UITableViewController {
     
     fileprivate var notes: [Note]? = nil
     
+    fileprivate var noteToUpdate: Note?
+    
     private let noteDataSource = NoteDataSource()
     
     private var noteFetchAllDataTask: URLSessionDataTask?
+    
+    fileprivate func deleteNote(index: Int) {
+        guard let notes = notes else { return }
+        
+        _ = noteDataSource.delete(note: notes[index]) { [weak self] (note, error) in
+            if let error = error {
+                self?.showError(error: error)
+            } else {
+                self?.notes?.remove(at: index)
+                self?.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .top)
+            }
+        }
+    }
     
     private func fetchNotes() {
         noteFetchAllDataTask?.cancel()
@@ -83,10 +101,6 @@ class NotesViewController: UITableViewController {
                 strongSelf.tableView.reloadData()
             }
         }
-    }
-    
-    private func deleteNote(index: Int) {
-        
     }
     
     private func handleDataSourceError(_ error: NoteDataSourceError) {
@@ -107,24 +121,39 @@ class NotesViewController: UITableViewController {
         present(alertView, animated: true)
     }
     
+    private func showError(error: Error) {
+        let alert = UIAlertController(title: "Error", message: "\(error)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Close", style: .default, handler: nil))
+        navigationController?.present(alert, animated: true, completion: nil)
+    }
+    
     private func showNote(_ note: Note) {
         let ctrl = NoteViewController()
         ctrl.note = note
         ctrl.delegate = self
         navigationController?.pushViewController(ctrl, animated: true)
     }
-}
-
-extension NotesViewController: NoteViewControllerDelegate {
     
-    func noteViewController(noteViewController: NoteViewController, didSaveNote note: Note) {
+    private func updateUIForNote(note: Note) {
         guard
             let notes = self.notes,
             let key = note.key,
             let index = notes.indexForKey(key)
             else { return }
         
-        let indexPath = IndexPath(row: index, section: 0)
-        tableView.reloadRows(at: [indexPath], with: .fade)
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+        
+        if note.note.isEmpty {
+            deleteNote(index: index)
+        }
+    }
+}
+
+// MARK: - NoteViewControllerDelegate
+
+extension NotesViewController: NoteViewControllerDelegate {
+    
+    func noteViewController(noteViewController: NoteViewController, didSaveNote note: Note) {
+        noteToUpdate = note
     }
 }
