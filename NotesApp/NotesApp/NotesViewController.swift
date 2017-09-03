@@ -72,6 +72,12 @@ class NotesViewController: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        return [UITableViewRowAction(style: .destructive, title: "Delete", handler: { [weak self] (action, indexPath) in
+            self?.deleteNote(index: indexPath.row)
+        })]
+    }
+    
     // MARK: - Private
     
     fileprivate var notes: [Note]? = nil
@@ -98,7 +104,10 @@ class NotesViewController: UITableViewController {
     }
     
     fileprivate func deleteNote(index: Int) {
-        guard let notes = notes else { return }
+        guard
+            let notes = notes,
+            index < notes.count
+            else { return }
         
         _ = noteDataSource.delete(note: notes[index]) { [weak self] (note, error) in
             if let error = error {
