@@ -25,6 +25,10 @@ public extension Array where Element == Note {
         }
     }
     
+    public func indexForKey(_ key: Int) -> Int? {
+        return index(where: { $0.key == key })
+    }
+    
     public func nextKey() -> Int {
         var maxKey: Int = 0
         for note in self {
@@ -34,15 +38,17 @@ public extension Array where Element == Note {
         return maxKey + 1
     }
     
-    public func indexForKey(_ key: Int) -> Int? {
-        return index(where: { $0.key == key })
-    }
-    
     public mutating func removeForKey(_ key: Int) -> Note? {
         if let index = indexForKey(key) {
             return remove(at: index)
         } else {
             return nil
         }
+    }
+    
+    public func sortedReverseChronologically() -> [Note] {
+        return sorted(by: { left, right -> Bool in
+            return left.date > right.date
+        })
     }
 }

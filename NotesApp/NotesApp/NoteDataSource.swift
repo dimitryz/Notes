@@ -40,7 +40,7 @@ class NoteDataSource {
                 return
             }
             
-            callback(notes, nil)
+            callback(notes.sortedReverseChronologically(), nil)
         }
     }
     
