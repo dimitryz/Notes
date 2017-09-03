@@ -91,7 +91,7 @@ class NotesViewController: UITableViewController {
                 sSelf.showError(error: error)
             } else if let note = note {
                 sSelf.notes?.insert(note, at: 0)
-                sSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .bottom)
+                sSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .none)
                 sSelf.showNote(note)
             }
         }

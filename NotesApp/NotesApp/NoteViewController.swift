@@ -32,6 +32,7 @@ class NoteViewController: UIViewController {
         textView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         textView.delegate = self
+        textView.keyboardDismissMode = .interactive
         
         navigationItem.rightBarButtonItem = saveButton
     }
@@ -46,6 +47,51 @@ class NoteViewController: UIViewController {
         super.viewWillAppear(animated)
         
         updateContents()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        textView.contentOffset = CGPoint(x: 0, y: -textView.contentInset.top)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        view.endEditing(true)
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Keyboard handling
+    
+    func keyboardWillChangeFrame(_ notification: Notification) {
+        guard
+            let window = view.window,
+            let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
+            let animationCurve = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? UInt,
+            let animationDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? Double
+            else { return }
+        
+        let ownFrame = view.convert(textView.frame, to: window)
+        let coveredFrame = ownFrame.intersection(keyboardFrame)
+        
+        var newInset = textView.contentInset
+        newInset.bottom = coveredFrame.height
+        
+        UIView.animate(
+            withDuration: animationDuration,
+            delay: 0,
+            options: UIViewAnimationOptions(rawValue: animationCurve << 16),
+            animations: { [weak self] in
+                guard let `self` = self else { return }
+                
+                self.textView.contentInset = newInset
+                self.textView.scrollIndicatorInsets = newInset
+        })
     }
     
     // MARK: - Private
@@ -95,7 +141,7 @@ class NoteViewController: UIViewController {
     }
     
     
-    private func updateSaveButtonState() {
+    fileprivate func updateSaveButtonState() {
         saveButton.isEnabled = newNoteContent != note?.note
     }
 }
@@ -128,6 +174,7 @@ extension NoteViewController {
                         sSelf.showError(error: error)
                     } else {
                         note.note = newNoteContent
+                        sSelf.updateSaveButtonState()
                     }
                 }
             })
