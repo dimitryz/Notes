@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		234CF0731F5344DD00478B6F /* locking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234CF0721F5344DD00478B6F /* locking.swift */; };
 		234CF0741F53455800478B6F /* locking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234CF0721F5344DD00478B6F /* locking.swift */; };
+		23C0C0171F5CC39C008A49DF /* NotesShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C0C0161F5CC39C008A49DF /* NotesShared.framework */; };
 		23ED658A1F53AED3003C55B5 /* NotesShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23ED65891F53AED3003C55B5 /* NotesShared.framework */; };
 		OBJ_140 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_124 /* Logger.swift */; };
 		OBJ_147 /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_119 /* Socket.swift */; };
@@ -291,6 +292,7 @@
 
 /* Begin PBXFileReference section */
 		234CF0721F5344DD00478B6F /* locking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = locking.swift; sourceTree = "<group>"; };
+		23C0C0161F5CC39C008A49DF /* NotesShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotesShared.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Notes-fbmrjwmfonvqypfyuidlsdqrnywp/Build/Products/Debug/NotesShared.framework"; sourceTree = "<group>"; };
 		23ED65891F53AED3003C55B5 /* NotesShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotesShared.framework; path = ../NotesShared/build/Debug/NotesShared.framework; sourceTree = "<group>"; };
 		OBJ_100 /* URLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLParser.swift; sourceTree = "<group>"; };
 		OBJ_102 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
@@ -403,6 +405,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
+				23C0C0171F5CC39C008A49DF /* NotesShared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,6 +495,7 @@
 		23ED65881F53AED3003C55B5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23C0C0161F5CC39C008A49DF /* NotesShared.framework */,
 				23ED65891F53AED3003C55B5 /* NotesShared.framework */,
 			);
 			name = Frameworks;
