@@ -25,6 +25,10 @@ public extension Array where Element == Note {
         }
     }
     
+    public func indexOfNote(_ note: Note) -> Int? {
+        return note.key == nil ? nil : indexForKey(note.key!)
+    }
+    
     public func indexForKey(_ key: Int) -> Int? {
         return index(where: { $0.key == key })
     }

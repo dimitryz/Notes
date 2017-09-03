@@ -34,7 +34,13 @@ class NotesViewController: UITableViewController {
         
         if notes == nil {
             self.fetchNotes()
-        } else if let noteToUpdate = noteToUpdate {
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if let noteToUpdate = noteToUpdate {
             updateUIForNote(note: noteToUpdate)
             self.noteToUpdate = nil
         }
@@ -96,8 +102,6 @@ class NotesViewController: UITableViewController {
             if let error = error {
                 sSelf.showError(error: error)
             } else if let note = note {
-                sSelf.notes?.insert(note, at: 0)
-                sSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .none)
                 sSelf.showNote(note)
             }
         }
@@ -166,14 +170,18 @@ class NotesViewController: UITableViewController {
     private func updateUIForNote(note: Note) {
         guard
             let notes = self.notes,
-            let key = note.key,
-            let index = notes.indexForKey(key)
+            let key = note.key
             else { return }
         
-        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
-        
-        if note.note.isEmpty {
-            deleteNote(index: index)
+        if let index = notes.indexForKey(key) {
+            tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+            
+            if note.note.isEmpty {
+                deleteNote(index: index)
+            }
+        } else if !note.note.isEmpty {
+            self.notes?.insert(note, at: 0)
+            tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
         }
     }
 }
