@@ -9,7 +9,13 @@
 import NotesShared
 import UIKit
 
+protocol NoteViewControllerDelegate {
+    func noteViewController(_ noteViewController: NoteViewController, didSaveNote note: Note)
+}
+
 class NoteViewController: UIViewController {
+    
+    var delegate: NoteViewControllerDelegate?
     
     var note: Note? {
         didSet {
@@ -171,6 +177,7 @@ extension NoteViewController {
                         originalNote.key = newNote.key
                         originalNote.note = newNote.note
                         sSelf.updateSaveButtonState()
+                        sSelf.delegate?.noteViewController(sSelf, didSaveNote: originalNote)
                     }
                 }
             })

@@ -26,6 +26,8 @@ class NotesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Notes"
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
     }
     
@@ -153,9 +155,8 @@ class NotesViewController: UITableViewController {
     private func showNote(_ note: Note) {
         let ctrl = NoteViewController()
         ctrl.note = note
+        ctrl.delegate = self
         navigationController?.pushViewController(ctrl, animated: true)
-        
-        noteToUpdate = note
     }
     
     private func updateUIForNote(note: Note) {
@@ -176,5 +177,14 @@ extension NotesViewController {
     
     func addButtonTapped() {
         addNote()
+    }
+}
+
+// MARK: - Delegate
+
+extension NotesViewController: NoteViewControllerDelegate {
+    
+    func noteViewController(_ noteViewController: NoteViewController, didSaveNote note: Note) {
+        noteToUpdate = note
     }
 }
