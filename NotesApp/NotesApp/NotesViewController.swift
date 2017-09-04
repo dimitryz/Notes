@@ -65,7 +65,13 @@ class NotesViewController: UITableViewController {
         }
         
         if let note = notes?[indexPath.row] {
-            cell.textLabel?.text = note.note.isEmpty ? " " : note.note
+            if note.note.isEmpty {
+                cell.textLabel?.text = "Note is empty"
+                cell.textLabel?.textColor = UIColor.darkText.withAlphaComponent(0.3)
+            } else {
+                cell.textLabel?.text = note.note
+                cell.textLabel?.textColor = UIColor.darkText
+            }
             cell.detailTextLabel?.text = NotesViewController.dateFormatter.string(from: note.date)
         }
         
