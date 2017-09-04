@@ -96,8 +96,6 @@ class NoteViewController: UIViewController {
     
     // MARK: - Private
     
-    private var loadingViewController: LoadingViewController?
-    
     fileprivate let noteDataSource = NoteDataSource()
     
     private let saveButton = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveTapped))
@@ -125,7 +123,8 @@ class NoteViewController: UIViewController {
     }
     
     fileprivate func hideLoadingIndicator(callback: (() -> Void)?) {
-        loadingViewController?.dismiss(animated: true, completion: callback)
+        guard let rootViewController = navigationController as? RootViewController else { return }
+        rootViewController.hideLoading(callback: callback)
     }
     
     fileprivate func showError(error: Error) {
@@ -135,9 +134,8 @@ class NoteViewController: UIViewController {
     }
     
     fileprivate func showLoadingIndicator(callback: (() -> Void)?) {
-        let loadingViewController = LoadingViewController()
-        navigationController?.present(loadingViewController, animated: true, completion: callback)
-        self.loadingViewController = loadingViewController
+        guard let rootViewController = navigationController as? RootViewController else { return }
+        rootViewController.showLoading(callback: callback)
     }
     
     
