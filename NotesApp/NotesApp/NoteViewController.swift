@@ -160,13 +160,13 @@ extension NoteViewController {
             let newNoteContent = newNoteContent
             else { return }
         
-        let newNote = originalNote.copy() as! Note
-        newNote.note = newNoteContent
+        var note = originalNote
+        note.note = newNoteContent
         
         showLoadingIndicator { [weak self] in
             guard let sSelf = self else { return }
             
-            _ = sSelf.noteDataSource.save(note: newNote, callback: { [weak self] (newNote, error) in
+            _ = sSelf.noteDataSource.save(note: note, callback: { [weak self] (note, error) in
                 
                 self?.hideLoadingIndicator { [weak self] in
                     guard let sSelf = self else { return }
@@ -174,10 +174,9 @@ extension NoteViewController {
                     if let error = error {
                         sSelf.showError(error: error)
                     } else {
-                        originalNote.key = newNote.key
-                        originalNote.note = newNote.note
+                        sSelf.note = note
                         sSelf.updateSaveButtonState()
-                        sSelf.delegate?.noteViewController(sSelf, didSaveNote: originalNote)
+                        sSelf.delegate?.noteViewController(sSelf, didSaveNote: note)
                     }
                 }
             })

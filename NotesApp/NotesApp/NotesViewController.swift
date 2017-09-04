@@ -163,6 +163,7 @@ class NotesViewController: UITableViewController {
         guard let key = note.key else { return }
         
         if let index = notes?.indexForKey(key) {
+            notes?[index] = note
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
         } else if self.notes != nil {
             notes?.insert(note, at: 0)
