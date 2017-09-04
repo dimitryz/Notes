@@ -9,9 +9,12 @@ The Notes app is a simple client/server application entirely written in Swift, w
 
 ## Installing
 
-> `git clone git@github.com:dimitryz/Notes.git`\
-> `cd Notes`\
-> `./install.sh`
+```
+git clone git@github.com:dimitryz/Notes.git
+cd Notes
+./install.sh
+open Notes.xcworkspace
+```
 
 That should install all of the necessasry packages for both the _NotesServer_ and _NotesShared_ projects. The dependancies of the _NotesApp_ project are bundled with the source code.
 
