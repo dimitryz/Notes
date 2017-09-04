@@ -5,6 +5,7 @@ The Notes app is a simple client/server application entirely written in Swift, w
 ## Requirements
 
 - **XCode 8.x**
+- **Swift 3.1**
 
 ## Installing
 
