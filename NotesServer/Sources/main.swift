@@ -21,7 +21,7 @@ router.get("/notes") { request, response, next in
     next()
 }
 
-// Creates a new note and returns it
+// Creates a new note or saves an existing note
 router.post("/notes") { request, response, next in
     guard
         let json = request.body?.asJSON,
@@ -29,36 +29,15 @@ router.post("/notes") { request, response, next in
         else { next(); return }
     
     lock() {
-        note.key = notes.nextKey()
-        notes.append(note)
-    }
-    
-    response.send(json: note.json)
-    next()
-}
-
-// Updates an existing note
-router.post("/notes/:key") { request, response, next in
-    guard
-        let keyString = request.parameters["key"],
-        let key = Int(keyString),
-        let noteText = request.body?.asJSON?["note"].string
-        else { next(); return }
-    
-    var note: Note?
-    
-    lock() {
-        if let index = notes.indexForKey(key) {
-            note = notes[index]
-            note!.note = noteText
-            notes[index] = note!
+        if let key = note.key, let index = notes.indexForKey(key) {
+            notes[index] = note
+        } else {
+            note.key = notes.nextKey()
+            notes.append(note)
         }
     }
     
-    if note != nil {
-        response.send(json: note!.json)
-    }
-    
+    response.send(json: note.json)
     next()
 }
 

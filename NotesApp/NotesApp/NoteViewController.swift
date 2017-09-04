@@ -150,28 +150,26 @@ extension NoteViewController {
     
     func saveTapped() {
         guard
-            let note = self.note,
+            let originalNote = self.note,
             let newNoteContent = newNoteContent
             else { return }
         
-        let newNote = note.copy() as! Note
+        let newNote = originalNote.copy() as! Note
         newNote.note = newNoteContent
         
         showLoadingIndicator { [weak self] in
             guard let sSelf = self else { return }
             
-            _ = sSelf.noteDataSource.update(note: newNote, callback: { [weak self] (_, error) in
+            _ = sSelf.noteDataSource.save(note: newNote, callback: { [weak self] (newNote, error) in
                 
                 self?.hideLoadingIndicator { [weak self] in
-                    guard
-                        let sSelf = self,
-                        let note = sSelf.note
-                        else { return }
+                    guard let sSelf = self else { return }
                     
                     if let error = error {
                         sSelf.showError(error: error)
                     } else {
-                        note.note = newNoteContent
+                        originalNote.key = newNote.key
+                        originalNote.note = newNote.note
                         sSelf.updateSaveButtonState()
                     }
                 }

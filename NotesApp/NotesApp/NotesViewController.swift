@@ -95,16 +95,7 @@ class NotesViewController: UITableViewController {
     private var noteFetchAllDataTask: URLSessionDataTask?
     
     fileprivate func addNote() {
-        _ = noteDataSource.save(text: "") { [weak self] (note, error) in
-            
-            guard let sSelf = self else { return }
-            
-            if let error = error {
-                sSelf.showError(error: error)
-            } else if let note = note {
-                sSelf.showNote(note)
-            }
-        }
+        showNote(Note(key: nil, note: "", date: Date()))
     }
     
     fileprivate func deleteNote(index: Int) {
@@ -168,19 +159,12 @@ class NotesViewController: UITableViewController {
     }
     
     private func updateUIForNote(note: Note) {
-        guard
-            let notes = self.notes,
-            let key = note.key
-            else { return }
+        guard let key = note.key else { return }
         
-        if let index = notes.indexForKey(key) {
+        if let index = notes?.indexForKey(key) {
             tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
-            
-            if note.note.isEmpty {
-                deleteNote(index: index)
-            }
-        } else if !note.note.isEmpty {
-            self.notes?.insert(note, at: 0)
+        } else if self.notes != nil {
+            notes?.insert(note, at: 0)
             tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .top)
         }
     }

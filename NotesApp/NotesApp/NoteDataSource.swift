@@ -44,42 +44,24 @@ class NoteDataSource {
         }
     }
     
-    func save(text: String, callback: @escaping (Note?, NoteDataSourceError?) -> Void) -> URLSessionDataTask {
+    func save(note: Note, callback: @escaping (Note, NoteDataSourceError?) -> Void) -> URLSessionDataTask? {
         
-        let newNote = Note(key: nil, note: text, date: Date())
-        
-        return dataTask("/notes", method: .post, payload: newNote.json) { data, error in
-            guard error == nil else {
-                callback(nil, error)
-                return
-            }
-            
-            guard
-                let data = data,
-                let note = Note(json: JSON(data: data))
-                else
-            {
-                callback(nil, NoteDataSourceError.parsingError)
-                return
-            }
-            
-            callback(note, nil)
-        }
-    }
-    
-    func update(note: Note, callback: @escaping (Note, NoteDataSourceError?) -> Void) -> URLSessionDataTask? {
-        guard let noteKey = note.key else {
-            callback(note, .missingKey)
-            return nil
-        }
-        
-        return dataTask("/notes/\(noteKey)", method: .post, payload: note.json) { data, error in
+        return dataTask("/notes", method: .post, payload: note.json) { data, error in
             guard error == nil else {
                 callback(note, error)
                 return
             }
             
-            callback(note, nil)
+            guard
+                let data = data,
+                let responseNote = Note(json: JSON(data: data))
+                else {
+                    
+                callback(note, .parsingError)
+                return
+            }
+            
+            callback(responseNote, nil)
         }
     }
     
