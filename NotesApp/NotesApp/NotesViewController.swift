@@ -97,7 +97,7 @@ class NotesViewController: UITableViewController {
     private var noteFetchAllDataTask: URLSessionDataTask?
     
     fileprivate func addNote() {
-        showNote(Note(key: nil, note: "", date: Date()))
+        showNote(Note())
     }
     
     fileprivate func deleteNote(index: Int) {

@@ -12,18 +12,15 @@ public struct Note {
     
     // MARK: - Public
     
-    static let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZ"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        return dateFormatter
-    }()
-    
     public var key: Int?
     public var note: String
     public let date: Date
     
     // Initializer
+    
+    public init() {
+        self.init(key: nil, note: "", date: Date())
+    }
 
     public init(key: Int?, note: String, date: Date) {
         self.key = key
@@ -57,4 +54,13 @@ public struct Note {
         
         return JSON(dict)
     }
+    
+    // MARK: - Internal
+    
+    static let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZ"
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        return dateFormatter
+    }()
 }
