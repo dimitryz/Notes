@@ -47,8 +47,9 @@ class LoadingView: UIView {
         UIView.animate(withDuration: animated ? 0.3 : 0, animations: { [weak self] in
             self?.layer.opacity = 0.0
         }) { [weak self] _ in
-            self?.isHidden = true
-            self?.stopAnimating()
+            guard let `self` = self else { return }
+            self.isHidden = true
+            self.stopAnimating()
             callback?()
         }
     }
