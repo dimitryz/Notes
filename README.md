@@ -1,6 +1,6 @@
 ## Notes App
 
-The Notes app is a simple client/server application entirely written in Swift, with shared business logic. The reason for creating this application was to experiment with the posibilities of server-side Swift using the Kitura framework and shared business logic between client and server.
+The Notes app is a simple client/server application entirely written in Swift, with shared business logic. The reason for creating this application was to experiment with the posibilities of server-side Swift using the [Kitura](http://www.kitura.io) framework and shared business logic between client and server.
 
 ## Requirements
 
