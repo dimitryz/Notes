@@ -8,7 +8,7 @@ The Notes app is a simple client/server application entirely written in Swift, w
 
 ## Installing
 
-> `git checkout`\
+> `git clone git@github.com:dimitryz/Notes.git`\
 > `cd Notes`\
 > `./install.sh`
 
@@ -18,7 +18,7 @@ That should install all of the necessasry packages for both the _NotesServer_ an
 
 Start by opening the _Notes.xcworkspace_ with XCode 8.x.
 
-Running the application is a two step process. First, in XCode, you have to run the _NotesServer_ project using the _Mac_ as the device. After that launches, you have to run the _NotesApp_ project using any of the iPohne simulators. Please note that the app was built for the iOS 10 simulator and not tested on an actual device.
+Running the application is a two step process. First, in XCode, you have to run the _NotesServer_ project using _Mac_ as the device. After that launches, you have to run the _NotesApp_ project using any of the iPhone simulators. Please note that the app was built for the iOS 10 simulator and not tested on an actual device.
 
 ## What does it do?
 
