@@ -37,3 +37,9 @@ playground.xcworkspace
 # Package.pins
 # Package.resolved
 .build/
+
+## Vagrants
+.vagrant/
+
+## VIM
+.swp
