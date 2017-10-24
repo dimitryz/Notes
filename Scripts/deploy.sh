@@ -29,8 +29,6 @@ ssh -T $DEPLOY_USER@$SSH_HOST -p$SSH_PORT << EOSSH
 
 cd $APP_SHARED_ROOT
 
-swift build  -c release
-
 git config --global user.email "$DEPLOY_USER@localhost"
 git config --global user.name "deploy"
 git init
@@ -39,5 +37,8 @@ git commit -am "NotesShared"
 git tag 1.0.0
 
 cd $APP_SERVER_ROOT
+
+sed -i 's/dependencies:\s*\[/dependencies: [\n    .Package(url: "\.\.\/NotesShared", majorVersion: 1),/g' Package.swift
+swift build -c release
 
 EOSSH

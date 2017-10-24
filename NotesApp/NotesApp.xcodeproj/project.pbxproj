@@ -13,7 +13,7 @@
 		238B55361F5390D900239CC8 /* NoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238B55351F5390D900239CC8 /* NoteDataSource.swift */; };
 		238B55381F539B2F00239CC8 /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238B55371F539B2F00239CC8 /* NotesViewController.swift */; };
 		238B553A1F539B5300239CC8 /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238B55391F539B5300239CC8 /* RootViewController.swift */; };
-		23ED658C1F53AF66003C55B5 /* NotesShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23ED658B1F53AF66003C55B5 /* NotesShared.framework */; };
+		23DBC7BA1F9EE0B800795BB7 /* NotesShared.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23DBC7BB1F9EE0B800795BB7 /* NotesShared.framework */; };
 		23ED659E1F53E157003C55B5 /* NoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED659D1F53E157003C55B5 /* NoteViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +39,7 @@
 		238B55351F5390D900239CC8 /* NoteDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteDataSource.swift; sourceTree = "<group>"; };
 		238B55371F539B2F00239CC8 /* NotesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		238B55391F539B5300239CC8 /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		23DBC7BB1F9EE0B800795BB7 /* NotesShared.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NotesShared.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23ED658B1F53AF66003C55B5 /* NotesShared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotesShared.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Notes-cfpgxifqgmmbslftknxejmqoymqt/Build/Products/Debug-iphonesimulator/NotesShared.framework"; sourceTree = "<group>"; };
 		23ED659D1F53E157003C55B5 /* NoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteViewController.swift; sourceTree = "<group>"; };
 		3B81158A213B6F1E3FEE7FF3 /* Pods-NotesApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NotesApp.release.xcconfig"; path = "../Pods/Target Support Files/Pods-NotesApp/Pods-NotesApp.release.xcconfig"; sourceTree = "<group>"; };
@@ -51,7 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23ED658C1F53AF66003C55B5 /* NotesShared.framework in Frameworks */,
+				23DBC7BA1F9EE0B800795BB7 /* NotesShared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +104,7 @@
 		287565418D284E648D9C3BCB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23DBC7BB1F9EE0B800795BB7 /* NotesShared.framework */,
 				23ED658B1F53AF66003C55B5 /* NotesShared.framework */,
 				C9611E130D2A55E7C028DF15 /* Pods_NotesApp.framework */,
 			);

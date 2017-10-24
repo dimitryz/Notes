@@ -106,18 +106,10 @@
 		23ED657D1F53AE9C003C55B5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				23ED657E1F53AE9C003C55B5 /* Models */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		23ED657E1F53AE9C003C55B5 /* Models */ = {
-			isa = PBXGroup;
-			children = (
 				23ED657F1F53AE9C003C55B5 /* Array+Note.swift */,
 				23ED65801F53AE9C003C55B5 /* Note.swift */,
 			);
-			path = Models;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		OBJ_11 /* Tests */ = {
