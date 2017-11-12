@@ -6,6 +6,21 @@ DEPLOY_USER=deploy
 SSH_HOST=127.0.0.1
 SSH_PORT=2222
 
+while getopts :h:p: opts; do
+   case ${opts} in
+      h)
+        SSH_HOST=${OPTARG}
+        ;;
+      p)
+        SSH_PORT=${OPTARG}
+        ;;
+      \?)
+        echo "Invalid option -$OPTARG" >&2
+        exit 1
+        ;;
+   esac
+done
+
 # Directory with the different code bases
 DEPLOY_HOME=/home/deploy
 DEPLOY_DIR=`date  +%Y%m%dT%H%M%S`
@@ -16,6 +31,8 @@ DEPLOY_BUILD_PATH="$DEPLOY_SERVER_ROOT/.build"
 
 APP_HOME=/home/app
 APP_LINK_PATH="$APP_HOME/build"
+
+echo "Deploying to $SSH_HOST:$SSH_PORT"
 
 #
 # Starts the deploy process
